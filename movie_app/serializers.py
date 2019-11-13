@@ -31,32 +31,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['username', 'is_superuser', 'profile',]
 
 
-class DirectorSerializer(serializers.ModelSerializer):
-    """
-    Serialize and deserialize Director instances into representations such as json.
-    """
-    
-    class Meta:
-        """
-        Specify the model and fields.
-        """
-        model = Director
-        fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
-
-
-class GenreSerializer(serializers.ModelSerializer):
-    """
-    Serialize and deserialize Genre instances into representations such as json.
-    """
-
-    class Meta:
-        """
-        Specify the model and fields.
-        """
-        model = Genre
-        fields = ['name',]
-
-
 class LanguageSerializer(serializers.ModelSerializer):
     """
     Serialize and deserialize Language instances into representations such as json.
@@ -80,7 +54,7 @@ class ReviewSerializer(serializers.ModelSerializer):
         Specify the model and fields.
         """
         model = Review
-        fields = ['owner', 'title', 'text']
+        fields = ['owner', 'title', 'text',]
 
 
 class VoteSerializer(serializers.ModelSerializer):
@@ -94,19 +68,34 @@ class VoteSerializer(serializers.ModelSerializer):
         """
         model = Vote
         fields = ['movie', 'times_rated', 'total_rating', 'final_rating',]
+        
 
+class ActorSerializer(serializers.ModelSerializer):
+    """
+    Serialize and deserialize Actor instances into representations such as json.
+    """
+    movies = serializers.StringRelatedField(many=True)
+    quotes = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        """
+        Specify the model and fields.
+        """
+        model = Actor
+        fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'movies', 'quotes',]
+        
 
 class MovieSerializer(serializers.ModelSerializer):
     """
     Serialize and deserialize movie instances into representations such as json.
     """
-    genres = GenreSerializer(read_only=True, many=True)
-    cast = ActorSerializer(read_only=True, many=True)
-    language = LanguageSerializer(read_only=True)
-    directed_by = DirectorSerializer(read_only=True)
+    language = LanguageSerializer()
+    genres = serializers.StringRelatedField(many=True)
+    cast = ActorSerializer(many=True)
+    directed_by = serializers.StringRelatedField(required=False)
     quotes = serializers.StringRelatedField(many=True, required=False)
-    reviews = ReviewSerializer(read_only=True, many=True)
-    vote = VoteSerializer(read_only=True)
+    reviews = ReviewSerializer(many=True)
+    vote = VoteSerializer()
 
     class Meta:
         """
@@ -132,8 +121,8 @@ class QuoteSerializer(serializers.ModelSerializer):
     """
     Serialize and deserialize Quote instances into representations such as json.
     """
-    by = ActorSerializer(read_only=True)
-    movie = MovieSerializer(read_only=True)
+    by = ActorSerializer()
+    movie = MovieSerializer()
 
     class Meta:
         """
@@ -141,20 +130,34 @@ class QuoteSerializer(serializers.ModelSerializer):
         """
         model = Quote
         fields = ['text', 'by', 'movie']
-    
 
-class ActorSerializer(serializers.ModelSerializer):
+
+class DirectorSerializer(serializers.ModelSerializer):
     """
-    Serialize and deserialize Actor instances into representations such as json.
+    Serialize and deserialize Director instances into representations such as json.
     """
-    quotes = QuoteSerializer(read_only=True)
+    movies = MovieSerializer(many=True)
 
     class Meta:
         """
         Specify the model and fields.
         """
-        model = Actor
-        fields = ['first_name', 'last_name', 'quotes', 'date_of_birth', 'date_of_death',]
+        model = Director
+        fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death', 'movies']
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    """
+    Serialize and deserialize Genre instances into representations such as json.
+    """
+    movies = MovieSerializer(many=True)
+
+    class Meta:
+        """
+        Specify the model and fields.
+        """
+        model = Genre
+        fields = ['name', 'movies']
 
 
 # x@e2e4.email

@@ -41,7 +41,6 @@ class Director(models.Model):
     last_name = models.CharField(max_length=100, blank=True, default='')
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
-    comments = models.TextField(blank=True, default='')
 
     def __str__(self):
         """String for representing the Model object."""
@@ -54,7 +53,6 @@ class Actor(models.Model):
     last_name = models.CharField(max_length=100, blank=True, default='')
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
-    comments = models.TextField(blank=True, default='')
 
     def __str__(self):
         """String for representing the Model object."""
