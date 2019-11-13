@@ -1,0 +1,39 @@
+<h1>{{ movie.title }}</h1>
+
+{% if error_message %}<p><strong>{{ error.message }}</strong></p>{% endif %}
+
+{% if movie.description %}
+    <h2>Description:<br>{{ movie.description }}</h2>
+{% endif %}
+
+{% if movie.language %}
+    <h4>{{ movie.language }}</h4>
+{% endif %}
+
+{% if movie.date_released %}
+    <h4>{{ movie.date_released }}</h4>
+{% endif %}
+
+{% if movie.directed_by %}
+    <h4>{{ movie.directed_by }}</h4>
+{% endif %}
+
+{% if movie.genres %}
+    <h4>{{ movie.display_genre }}</h4>
+{% endif %}
+
+{% if movie.cast %}
+    <h4>{{ movie.display_cast }}</h4>
+{% endif %}
+
+{% if movie.rating %}
+    <h4>Rating: {{ movie.rating }}</h4>
+{% endif %}
+
+<form action="{% url 'rate' movie.id %}" method="POST">
+{% csrf_token %}
+    <label for="rating">Rate it.</label>
+    <input type="number" min="0" max="5" name="rating" id="rating">
+    <input type="submit" value="rate">
+</form>
+
