@@ -74,6 +74,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=50, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
 
+
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
@@ -86,9 +87,11 @@ class Profile(models.Model):
 
 class Movie(models.Model):
     "Model representing a movie"
+    owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="created_movies", null=True)
     directed_by = models.ForeignKey(Director, related_name="movies", on_delete=models.SET_NULL, null=True, blank=True)
     title = models.CharField(max_length=100, blank=True)
-    language = models.ForeignKey(Language, related_name="movies", on_delete=models.SET_NULL, null=True)
+    language = models.ForeignKey(Language, related_name="movies", on_delete=models.SET_NULL, null=True, blank=True)
+    rated_by = models.ManyToManyField(Profile, related_name="has_rated", blank=True)
     genres = models.ManyToManyField(Genre, related_name="movies", blank=True)
     cast = models.ManyToManyField(Actor, related_name="movies", blank=True)
     runtime = models.IntegerField(null=True, blank=True)
@@ -122,9 +125,12 @@ class Vote(models.Model):
     final_rating = models.IntegerField(default=0)
 
     def calc_rating(self):
-        r = self.total_rating / self.times_rated
-        self.final_rating = r
-        return r
+        if self.times_rated > 0:
+            r = self.total_rating / self.times_rated
+            self.final_rating = r
+            return r
+        else:
+            pass
 
     @receiver(post_save, sender=Movie)
     def create_movie_vote(sender, instance, created, **kwargs):

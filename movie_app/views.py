@@ -1,84 +1,51 @@
-from rest_framework import viewsets
-from rest_framework import generics
-from django.http import HttpResponse
-from .models import Movie, Director, Actor
-from django.contrib.auth.models import User
-from .serializers import MovieSerializer, DirectorSerializer, UserSerializer, ActorSerializer
+from rest_framework import viewsets, generics, permissions
+from .models import Movie, Director, Actor, Profile
+from .serializers import MovieSerializer, DirectorSerializer, ProfileSerializer, ActorSerializer
+from .permissions import isOwnerOrReadOnly
 
 
-class MovieListView(generics.ListCreateAPIView):
+class MovieViewSet(viewsets.ModelViewSet):
     """
-    A view to list and create movies.
+    A viewset that provides the standard actions.
     """
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user.profile)
 
-class MovieDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    A view to retrieve, update and destroy movies
-    """
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
-
-
-class DirectorListView(generics.ListCreateAPIView):
-    """
-    A view to list and create directors.
-    """
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
-
-
-class DirectorDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    A view to retrieve, update and destroy movies.
-    """
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
-
-
-class ActorListView(generics.ListCreateAPIView):
-    """
-    A view to list and create actors.
-    """
-    queryset = Actor.objects.all()
-    serializer_class = ActorSerializer
-
-
-class ActorDetailView(generics.RetrieveUpdateDestroyAPIView):
-    """
-    A view to retrieve, update and destroy actors.
-    """
-    queryset = Actor.objects.all()
-    serializer_class = ActorSerializer
-
+    def get_permissions(self):
+        """
+        Set the list of permissions that this view requires.
+        """
+        if self.action == 'list':
+            permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+        else:
+            permission_classes = [isOwnerOrReadOnly]
+        return [permission() for permission in permission_classes]
 
 class DirectorViewSet(viewsets.ModelViewSet):
     """
-    A Viewset to retrieve, update and destroy directors.
+    A viewset that provides the standard actions.
     """
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
-def update_profile(request, user_id):
+    
+class ActorViewSet(viewsets.ModelViewSet):
     """
-    A view to update a profile associated with a user.
+    A viewset that provides the standard actions.
     """
-    user = User.objects.get(id=user_id)
-    user.profile.bio = "Lorem ipsum dolor sit amet, consectetur adipisicing elit..."
-    user.save()
-    return HttpResponse("Profile updated!")
+    queryset = Actor.objects.all()
+    serializer_class = ActorSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-def update_vote(request, movie_id):
-    """
-    A view to update a vote associated with a movie.
-    """
-    movie = Movie.objects.get(id=movie_id)
-    movie.vote.total_rating += 5
-    movie.vote.times_rated += 1
-    movie.save()
-    return HttpResponse("Movie updated!")
 
+class ProfileViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    A viewset that provides the standard actions.
+    """
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer

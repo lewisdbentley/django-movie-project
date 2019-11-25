@@ -3,18 +3,18 @@ from .models import Movie, Director, Genre, Language, Actor, Quote, Review, Prof
 from django.contrib.auth.models import User
 
 
-
 class ProfileSerializer(serializers.ModelSerializer):
     """
     Serialize and deserialize Profile instances into representations such as json.
     """
-    
+    created_movies = serializers.PrimaryKeyRelatedField(many=True, queryset=Movie.objects.all())
+
     class Meta:
         """
         Specify the model and fields.
         """
         model = Profile
-        fields = ['user', 'bio']
+        fields = ['user', 'bio', 'created_movies',]
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -42,19 +42,6 @@ class LanguageSerializer(serializers.ModelSerializer):
         """
         model = Language
         fields = ['name']
-
-
-class ReviewSerializer(serializers.ModelSerializer):
-    """
-    Serialize and deserialize Review instances into representations such as json.
-    """
-
-    class Meta:
-        """
-        Specify the model and fields.
-        """
-        model = Review
-        fields = ['owner', 'title', 'text',]
 
 
 class VoteSerializer(serializers.ModelSerializer):
@@ -89,13 +76,13 @@ class MovieSerializer(serializers.ModelSerializer):
     """
     Serialize and deserialize movie instances into representations such as json.
     """
-    language = LanguageSerializer()
-    genres = serializers.StringRelatedField(many=True)
-    cast = ActorSerializer(many=True)
+    owner = serializers.ReadOnlyField(source='owner.user.username')
+    language = LanguageSerializer(required=False)
+    genres = serializers.StringRelatedField(many=True, required=False)
+    cast = ActorSerializer(many=True, required=False)
     directed_by = serializers.StringRelatedField(required=False)
     quotes = serializers.StringRelatedField(many=True, required=False)
-    reviews = ReviewSerializer(many=True)
-    vote = VoteSerializer()
+    vote = VoteSerializer(required=False)
 
     class Meta:
         """
@@ -103,6 +90,7 @@ class MovieSerializer(serializers.ModelSerializer):
         """
         model = Movie
         fields = [
+            'owner',
             'directed_by',
             'title',
             'language',
@@ -112,7 +100,6 @@ class MovieSerializer(serializers.ModelSerializer):
             'description',
             'date_released',
             'quotes',
-            'reviews',
             'vote',
         ]
 
