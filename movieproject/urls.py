@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('cpanel/', admin.site.urls),
-    path('api/', include('movie_app.urls')),
+    path('api/', include('movie_app.api_urls')),
+    path('', include('movie_app.html_urls')),
 ]

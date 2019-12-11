@@ -1,0 +1,38 @@
+{% extends 'movie_app/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="title">Movie List</h1>
+<p class="light-text">Displaying {{ movies|length }} movies.</p>
+<img src="{% static 'img/banner.jpg' %}">
+
+<ul>
+    {% for movie in movies %}
+
+        <li class="transparent-background"><a href="{% url 'html-movie-detail' movie.id %}">{{ movie.title }}</a>
+
+        {% if movie.vote.final_rating %}
+            <p>Rating: {{ movie.vote.final_rating }}</p>
+        {% else %}
+            <p>Not rated.</p>
+        {% endif %}
+
+        {% if movie.display_cast != "" %}
+            <p>Featuring {{ movie.display_cast }}</p>
+        {% endif %}
+
+        {% if movie.description %}
+            <p>Synopsis: </p>
+            <p>{{ movie.description }}</p>
+        {% endif %}
+
+        {% if movie.runtime %}
+            <p>{{ movie.runtime }} minutes.</p>
+        {% endif %}
+
+        </li>
+
+    {% endfor %}
+</ul>
+{% endblock %}

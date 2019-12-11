@@ -1,0 +1,42 @@
+{% extends 'movie_app/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="title">{{ movie.title }}</h1>
+<p class="light-text">Created by {{ movie.owner.user }}</p>
+<img src="{% static 'img/hilde.jpg' %}"">
+
+<div class="transparent-background">
+
+    {% if movie.description %}
+        <p>{{ movie.description }}</p>
+    {% endif %}
+    
+    {% if movie.language %}
+        <p>{{ movie.language }}</p>
+    {% endif %}
+    
+    {% if movie.date_released %}
+        <p>{{ movie.date_released }}</p>
+    {% endif %}
+    
+    {% if movie.directed_by %}
+        <p>{{ movie.directed_by }}</p>
+    {% endif %}
+    
+    {% if movie.genres %}
+        <p>{{ movie.display_genre }}</p>
+    {% endif %}
+    
+    {% if movie.cast %}
+        <p>{{ movie.display_cast }}</p>
+    {% endif %}
+    
+    {% if movie.rating %}
+        <p>Rating: {{ movie.rating }}</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}
