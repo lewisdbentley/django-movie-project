@@ -1,0 +1,36 @@
+{% load static %}
+
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>{% block title %}Sugar Plum Movies{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/movies.css' %}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Sans&display=swap">
+</head>
+<body>
+    <section id="top">
+        <h1>Sugar Plum Movies</h1>
+        <p>
+            <a href="#">Home</a>
+            |
+            <a href="{% url 'html-movie-list' %}">Movies</a>
+            |
+            <a href="#">Projects</a>
+            |
+            <a href="#">Colophon</a>
+            {% if user.is_authenticated %}
+                Hi {{ user.username }}!
+                |
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            |
+            <a href="{% url 'login' %}">Login</a>
+            |
+            <a href="{% url 'signup' %}">Sign up</a>
+            {% endif %}
+        </p>
+    </section>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

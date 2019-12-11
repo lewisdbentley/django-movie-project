@@ -50,7 +50,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: .5rem;
     font-weight: bold;
     line-height: 1.25;
-    color: #313131;
+    color: #CC584E;
     text-rendering: optimizeLegibility;
 }
 h1 {
@@ -77,10 +77,6 @@ section#top {
 
 section#top h1, section#top a {
     color: #fff;
-}
-
-.title, .title a {
-    color: #CC584E
 }
 
 .light-text {

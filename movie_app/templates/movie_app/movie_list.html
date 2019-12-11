@@ -1,9 +1,12 @@
-{% extends 'movie_app/base.html' %}
+{% extends 'base.html' %}
+
+{% block title %}Movie List{% endblock %}
+
 {% load static %}
 
 {% block content %}
 
-<h1 class="title">Movie List</h1>
+<h2>Movie List</h2>
 <p class="light-text">Displaying {{ movies|length }} movies.</p>
 <img src="{% static 'img/banner.jpg' %}">
 
