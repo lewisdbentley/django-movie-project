@@ -2,14 +2,14 @@
 
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
-<h2 class="title">Login</h2>
+<h2 class="title">Sign Up</h2>
 <img src="{% static 'img/auth.jpg' %}">
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit">Sign Up</button>
 </form>
 {% endblock %}
