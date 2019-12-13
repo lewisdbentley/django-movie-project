@@ -1,20 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}<title>Movie List</title>{% endblock %}
-
-{% load static %}
 
 {% block content %}
-
 <h1>Movie List</h1>
 {% if movie_list %}
-<ul>
-    {% for movie in movie_list %}
-    <li>
-        <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
-    </li>
-    {% endfor %}
-</ul>
+    <ul>
+        {% for movie in movie_list %}
+        <li>
+            <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+            {% if movie.directed_by %}
+            ({{ movie.directed_by }})
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 {% else%}
     <p>There are no movies in the collection.</p>
 {% endif %}

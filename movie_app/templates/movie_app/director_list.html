@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<h1>Director List</h1>
+{% if director_list %}
+    <ul>
+        {% for director in director_list %}
+            <li>
+                <p>
+                    <a href="{% url 'html-director-detail' director.id %}">{{ director.first_name }} {{ director.last_name }}</a>
+                    {% if director.date_of_birth %}
+                        {{ director.date_of_birth }}
+                    {% endif %}
+                    -
+                    {% if director.date_of_death %}
+                        {{ director.date_of_death }}
+                    {% endif %}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+{% else%}
+    <p>There are no movies in the collection.</p>
+{% endif %}
+{% endblock %}

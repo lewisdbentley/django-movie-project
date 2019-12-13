@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1>Name: {{ director.first_name }} {{ director.last_name }}</h1>
+    <p>
+        {% if director.date_of_birth %}
+            {{ director.date_of_birth }}
+        {% endif %}
+        -
+        {% if director.date_of_death %}
+            {{ director.date_of_death }}
+        {% endif %}
+    </p>
+
+    <div style="margin-left:20px;margin-top:20px">
+        <h4 style="margin-bottom:20px">Movies</h4>
+        {% if director.movies.all|length > 0 %}
+            {% for movie in director.movies.all %}
+            <p>
+                <strong><a href="{% url 'html-movie-detail' movie.id %}">{{ movie.title }}</a> ({{ movie.id }})</strong><br>
+                {% if movie.description|length > 0 %}
+                    {{movie.description|truncatewords:18 }}
+                {% endif %}
+            </p>
+            {% endfor %}
+        {% else %}
+            <p>None available. </p><a href="">Create?</a>
+        {% endif %}
+    </div>
+{% endblock %}

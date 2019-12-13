@@ -19,7 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('cpanel/', admin.site.urls),
     path('api/', include('movie_app.api_urls')),
-    path('browse/', include('movie_app.html_urls')),
+    path('browse/', include('movie_app.urls')),
     path('accounts/', include('accounts.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

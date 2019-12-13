@@ -7,7 +7,7 @@ from .models import Movie, Director
 
 def index(request):
     """
-    A home page to display data. 
+    A home page to display dynamic data. 
     """
 
     # Generate counts of some of the main objects    
@@ -24,15 +24,28 @@ def index(request):
 
 class MovieList(generic.ListView):
     """
-    A view to return a HTML response of all movies
+    A view to return a HTML response of all movies.
     """
     model = Movie
+    paginate_by = 10
 
 
 class MovieDetail(generic.DetailView):
     """
-    A view to return a HTML response of a movie
+    A view to return a HTML response of a movie.
     """
     model = Movie
 
 
+class DirectorList(generic.ListView):
+    """
+    A view to return a HTML response of all directors.
+    """
+    model = Director
+
+
+class DirectorDetail(generic.DetailView):
+    """
+    A view to return a HTML response of a director.
+    """
+    model = Director

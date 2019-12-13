@@ -121,6 +121,9 @@ class Movie(models.Model):
         """String for representing the Model object."""
         return self.title
 
+    class Meta:
+        ordering = ['title']
+
 
 class Vote(models.Model):
     "Model representing rating information that relates to a Movie instance."

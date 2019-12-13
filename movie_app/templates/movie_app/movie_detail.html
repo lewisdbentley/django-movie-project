@@ -2,42 +2,26 @@
 
 
 {% block content %}
-
-<h2>{{ object.title }}</h2>
-<p class="light-text">Created by
-    {% if object.owner.user %}
-        {{ object.owner.user }}
-    {% else %}
-        anonymous
+    <h1>Title: {{ movie.title }}</h1>
+    {% if movie.description %}
+        <p><strong>Description: </strong>{{ movie.description }}</p>
     {% endif %}
-</p>
-
-{% if object.description %}
-    <p>{{ object.description }}</p>
-{% endif %}
-
-{% if object.language %}
-    <p>{{ object.language }}</p>
-{% endif %}
-
-{% if object.date_released %}
-    <p>{{ object.date_released }}</p>
-{% endif %}
-
-{% if object.directed_by %}
-    <p>{{ object.directed_by }}</p>
-{% endif %}
-
-{% if object.genres %}
-    <p>{{ object.display_genre }}</p>
-{% endif %}
-
-{% if object.cast %}
-    <p>{{ object.display_cast }}</p>
-{% endif %}
-
-{% if object.rating %}
-    <p>Rating: {{ object.rating }}</p>
-{% endif %}
-
+    {% if movie.language %}
+        <p><strong>Language: </strong>{{ movie.language }}</p>
+    {% endif %}
+    {% if movie.date_released %}
+        <p><strong>Released: </strong>{{ movie.date_released }}</p>
+    {% endif %}
+    {% if movie.directed_by %}
+        <p><strong>Directed by: </strong><a href="{% url 'html-director-detail' movie.directed_by.id %}">{{ movie.directed_by }}</a></p>
+    {% endif %}
+    {% if movie.display_genre != '' %}
+        <p><strong>Genre: </strong>{{ movie.display_genre }}</p>
+    {% endif %}
+    {% if movie.display_cast != '' %}
+        <p><strong>Cast: </strong>{{ movie.display_cast }}</p>
+    {% endif %}
+    {% if movie.rating %}
+        <p><strong>Rating: </strong>{{ movie.rating }}</p>
+    {% endif %}
 {% endblock %}
