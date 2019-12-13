@@ -1,4 +1,5 @@
 from django.db import models
+from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -111,6 +112,10 @@ class Movie(models.Model):
         """Create an integer for the Reviews. This is required to represent number of reviews in Admin."""
         return self.reviews.count()
     number_of_reviews.short_description = "Reviews"
+
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of MyModelName."""
+        return reverse('html-movie-detail', args=[str(self.id)])
 
     def __str__(self):
         """String for representing the Model object."""

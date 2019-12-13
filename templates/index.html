@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Plum Movies</h1>
+<p>Welcome to Plum Movies, a web application developed to rate and review movies!</p>
+<h2>Dynamic content</h2>
+<p>The collection has the following record counts:</p>
+<ul>
+    <li><strong>Movies: </strong>{{ num_movies }}</li>
+    <li><strong>Directors: </strong>{{ num_directors }}</li>
+</ul>
+
+{% endblock %}
