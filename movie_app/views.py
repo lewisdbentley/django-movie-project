@@ -11,12 +11,17 @@ def index(request):
     """
 
     # Generate counts of some of the main objects    
-    num_movies = Movie.objects.all().count()
-    num_directors = Director.objects.all().count()
+    num_movies = Movie.objects.count()
+    num_directors = Director.objects.count()
+
+    # Number of visits to this view, as counted in the session variable
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
 
     context = {
         'num_movies': num_movies,
         'num_directors': num_directors,
+        'num_visits': num_visits,
     }
 
     return render(request, 'index.html', context=context)
