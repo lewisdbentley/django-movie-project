@@ -7,8 +7,7 @@
     <ul>
         {% for director in director_list %}
             <li>
-                <p>
-                    <a href="{% url 'html-director-detail' director.id %}">{{ director.first_name }} {{ director.last_name }}</a>
+                    <a href="{% url 'html-director-detail' director.id %}">{{ director }}</a>
                     {% if director.date_of_birth %}
                         {{ director.date_of_birth }}
                     {% endif %}
@@ -16,7 +15,9 @@
                     {% if director.date_of_death %}
                         {{ director.date_of_death }}
                     {% endif %}
-                </p>
+                    {% if director.owner %}
+                        <strong>Created by: </strong>({{ director.owner.user.get_username }})
+                    {% endif %}
             </li>
         {% endfor %}
     </ul>

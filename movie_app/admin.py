@@ -1,23 +1,18 @@
 from django.contrib import admin
-from .models import Movie, Director, Genre, Actor, Review
+from .models import Movie, Director, Genre, Actor
 from django.contrib.auth.models import User
 from django.utils.html import format_html
-
-class ReviewInline(admin.StackedInline):
-    model = Review
 
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
     filter_horizontal = ('genres', 'cast',)
-    list_display = ('title', 'directed_by', 'display_genre', 'display_cast_pink', 'number_of_reviews', 'date_released',)
+    list_display = ('title', 'directed_by', 'display_genre', 'display_cast_pink', 'date_released',)
     list_display_links = ('title',)
     list_editable = ('directed_by', 'date_released')
     list_filter = ('genres',)
     list_per_page = 10
-    inlines = [
-        ReviewInline
-    ]
+
 
     def display_cast_pink(self, obj):
         """Create a bold pink string for the Actors. This is required to display cast in Admin."""
@@ -29,11 +24,6 @@ class MovieAdmin(admin.ModelAdmin):
         )
     display_cast_pink.short_description = "Cast"
     empty_value_display = "None"
-
-
-@admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(Actor)

@@ -2,7 +2,17 @@
 
 
 {% block content %}
-    <h1>Title: {{ movie.title }}</h1>
+    <h1>Title: {{ movie }}</h1>
+    {% if movie.owner == request.user.profile %}
+        <p><a class="btn btn-primary" href="{% url 'html-movie-update' movie.id %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'html-movie-delete' movie.id %}">Delete</a>
+        </p>
+    {% endif %}
+    {% if movie.vote.final_rating %}
+        <p><strong>Rating: </strong>{{ movie.vote.final_rating }}</p>
+        <p><strong>Total: </strong>{{ movie.vote.total_rating }}</p>
+        <p><strong>Times: </strong>{{ movie.vote.times_rated }}</p>
+    {% endif %}
     {% if movie.description %}
         <p><strong>Description: </strong>{{ movie.description }}</p>
     {% endif %}
@@ -18,10 +28,38 @@
     {% if movie.display_genre != '' %}
         <p><strong>Genre: </strong>{{ movie.display_genre }}</p>
     {% endif %}
+    {% if movie.runtime %}
+        <p><strong>Runtime: </strong>{{ movie.runtime }} minutes.</p>
+    {% endif %}
     {% if movie.display_cast != '' %}
         <p><strong>Cast: </strong>{{ movie.display_cast }}</p>
     {% endif %}
     {% if movie.rating %}
         <p><strong>Rating: </strong>{{ movie.rating }}</p>
     {% endif %}
+    {% if movie.owner %}
+        <p><strong>Created by: </strong>{{ movie.owner.user.get_username }}</p>
+    {% endif %}
+    
+    <div style="margin-left:20px;margin-top:20px">
+        {% if movie.moviecomment_set.all|length > 0 %}
+        <h4 style="margin-bottom:20px">Comments</h4>
+        {% for comment in movie.moviecomment_set.all %}
+            <p>
+                <a href="#">{{ comment.owner.user.get_username }}</a>
+                • {{ comment.date_created }}
+                {% if comment.owner == request.user.profile %}
+                    <a class="btn btn-primary btn-sm" href="{% url 'html-moviecomment-update' comment.id %}">Update</a>
+                    <a class="btn btn-danger btn-sm" href="{% url 'html-moviecomment-delete' comment.id %}">Delete</a>
+                {% endif %}
+            </p>
+            <p>{{ comment.text|truncatewords:18 }}</p>
+        {% endfor %}
+            <p>Leave a <a href="{% url 'html-moviecomment-create' %}">comment.</a></p>
+        {% else %}
+            <p>Be the first to <a href="{% url 'html-moviecomment-create' %}">comment.</a></p>
+        {% endif %}
+        <p><a href="{% url 'movie-vote' movie.id %}">Vote.</a></p>
+    </div>
+
 {% endblock %}

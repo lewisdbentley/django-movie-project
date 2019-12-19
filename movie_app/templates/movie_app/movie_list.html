@@ -7,9 +7,19 @@
     <ul>
         {% for movie in movie_list %}
         <li>
-            <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+            <a href="{{ movie.get_absolute_url }}">{{ movie }}</a>
             {% if movie.directed_by %}
             ({{ movie.directed_by }})
+            {% endif %}
+            {% if movie.owner %}
+                {% if movie.owner == request.user.profile %}
+                    <strong style="color:blue">You created this movie.</strong>
+                {% else %}
+                    <strong>Created by: </strong>({{ movie.owner.user.get_username }})
+                {% endif %}                
+            {% endif %}
+            {% if movie.vote %}
+                <strong>Rating: {{ movie.vote.final_rating }}</strong>
             {% endif %}
         </li>
         {% endfor %}

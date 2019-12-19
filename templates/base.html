@@ -19,15 +19,18 @@
             <ul class="sidebar-nav">
                 <li><a href="{% url 'index' %}">Home</a></li>
                 {% if user.is_authenticated %}
-                    <li>Hi {{ user.username }}!</li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li>User: {{ user.get_username }}</li>
+                    <li><a href="{% url 'logout' %}?next={{request.path}}">Logout</a></li>
                 {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'signup' %}">Sign up</a></li>
+                <li><a href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+                <li><a href="{% url 'signup' %}?next={{request.path}}">Sign up</a></li>
                 {% endif %}
                 <br>
                 <li><a href="{% url 'html-movie-list' %}">All movies</a></li>
                 <li><a href="{% url 'html-director-list' %}">All directors</a></li>
+                <br>
+                <li><a href="{% url 'html-movie-create' %}">New movie</a></li>
+                <li><a href="{% url 'html-director-create' %}">New director</a></li>
             </ul>
             {% endblock %}
             </div>

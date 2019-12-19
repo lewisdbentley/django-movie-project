@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'movie_app.apps.MovieAppConfig',
     'accounts.apps.AccountsConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'movieproject.urls'
@@ -134,7 +136,13 @@ STATICFILES_DIRS = [
 ]
 
 LOGIN_REDIRECT_URL = 'html-movie-list'
-LOGOUT_REDIRECT_URL = 'html-movie-list'
+# LOGOUT_REDIRECT_URL = 'html-movie-list'
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]

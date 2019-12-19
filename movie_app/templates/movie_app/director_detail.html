@@ -2,7 +2,15 @@
 
 
 {% block content %}
-    <h1>Name: {{ director.first_name }} {{ director.last_name }}</h1>
+    <h1>Name: {{ director }}</h1>
+        {% if director.owner == request.user.profile %}
+            <p><a class="btn btn-primary" href="{% url 'html-director-update' director.id %}">Update</a>
+                <a class="btn btn-danger" href="{% url 'html-director-delete' director.id %}">Delete</a>
+            </p>
+        {% endif %}
+    {% if director.owner %}
+        <p><strong>Created by: </strong>{{ director.owner.user.get_username }}</p>
+    {% endif %}
     <p>
         {% if director.date_of_birth %}
             {{ director.date_of_birth }}
