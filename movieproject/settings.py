@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'movie_app.apps.MovieAppConfig',
     'accounts.apps.AccountsConfig',
     'debug_toolbar',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

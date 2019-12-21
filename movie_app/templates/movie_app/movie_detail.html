@@ -2,17 +2,26 @@
 
 
 {% block content %}
-    <h1>Title: {{ movie }}</h1>
+    <h1>Title: {{ movie }}</h1><hr>
     {% if movie.owner == request.user.profile %}
-        <p><a class="btn btn-primary" href="{% url 'html-movie-update' movie.id %}">Update</a>
-            <a class="btn btn-danger" href="{% url 'html-movie-delete' movie.id %}">Delete</a>
+        <p>
+            <a class="btn btn-primary" href="{% url 'html-movie-update' movie.id %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'html-movie-delete' movie.id %}">Delete</a>            
         </p>
     {% endif %}
     {% if movie.vote.final_rating %}
-        <p><strong>Rating: </strong>{{ movie.vote.final_rating }}</p>
-        <p><strong>Total: </strong>{{ movie.vote.total_rating }}</p>
-        <p><strong>Times: </strong>{{ movie.vote.times_rated }}</p>
+        {% widthratio movie.vote.final_rating 5 200 as width %}
+        <div class="containerdiv">
+            <div>
+                {% load static %}
+                <img src="{% static 'img/stars_blank.png' %}" alt="">
+            </div>
+            <div class="cornerimage" style="width:{{ width }}px;">
+                <img src="{% static 'img/stars_full.png' %}" alt="">
+            </div>
+        </div>
     {% endif %}
+    
     {% if movie.description %}
         <p><strong>Description: </strong>{{ movie.description }}</p>
     {% endif %}
@@ -55,9 +64,9 @@
             </p>
             <p>{{ comment.text|truncatewords:18 }}</p>
         {% endfor %}
-            <p>Leave a <a href="{% url 'html-moviecomment-create' %}">comment.</a></p>
+            <p>Leave a <a href="{% url 'html-moviecomment-create' movie.id %}">comment.</a></p>
         {% else %}
-            <p>Be the first to <a href="{% url 'html-moviecomment-create' %}">comment.</a></p>
+            <p>Be the first to <a href="{% url 'html-moviecomment-create' movie.id %}">comment.</a></p>
         {% endif %}
         <p><a href="{% url 'movie-vote' movie.id %}">Vote.</a></p>
     </div>

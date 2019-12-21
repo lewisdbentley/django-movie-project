@@ -33,7 +33,7 @@
             </p>
             {% endfor %}
         {% else %}
-            <p>None available. </p><a href="">Create?</a>
+            <p>None available. </p><a href="{% url 'html-movie-create' %}">Create?</a>
         {% endif %}
     </div>
 {% endblock %}

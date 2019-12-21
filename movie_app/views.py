@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRespons
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from .models import Movie, Director, MovieComment
-from .forms import MovieVoteForm
+from .forms import MovieVoteForm, MovieCreateForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
@@ -58,6 +58,16 @@ class MovieCreate(LoginRequiredMixin, generic.edit.CreateView):
         obj = form.save(commit=False)
         obj.owner = self.request.user.profile
         return super(MovieCreate, self).form_valid(form)
+
+
+def MovieCreateNew(request):
+    if request.method == "POST":
+        form = MovieCreateForm(request.POST)
+        if form.is_valid():
+            pass
+    else:
+        form = MovieCreateForm()
+    return render(request, "movie_app/MovieCreateNew.html", {'form': form})
 
 
 class MovieUpdate(LoginRequiredMixin, UserPassesTestMixin, generic.edit.UpdateView):
@@ -181,12 +191,13 @@ class MovieCommentCreate(LoginRequiredMixin, generic.edit.CreateView):
     A view to create a comment.
     """
     model = MovieComment
-    fields = {'text', 'movie'}
+    fields = {'text'}
     initial = {'text': 'Jeremy Hunt'}
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.owner = self.request.user.profile
+        obj.movie = Movie.objects.get(pk=self.kwargs['pk'])
         return super(MovieCommentCreate, self).form_valid(form)
 
 
@@ -195,7 +206,7 @@ class MovieCommentUpdate(LoginRequiredMixin, UserPassesTestMixin, generic.edit.U
     A view to update a comment.
     """
     model = MovieComment
-    fields = {'text', 'movie'}
+    fields = {'text'}
 
     def test_func(self):
         obj = self.get_object()

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
+
 {% block content %}
-    <form action="" method="POST">
+<h2>New movie: </h2><br>
+    <form method="post" novalidate>
         {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <input type="submit" value="Submit">
+        {% include 'includes/bs4_form.html' %}
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 {% endblock %}
