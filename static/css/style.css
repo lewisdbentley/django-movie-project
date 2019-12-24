@@ -4,12 +4,11 @@
     list-style: none;
 }
 
-.containerdiv {
-    border: 0;
-    position: relative;
-    width: 200px;
-    margin-bottom: 20px;
+div.pagination {
+    margin-top: 20px;
 }
+
+/* Rating list and detail */
 
 .cornerimage {
     border: 0;
@@ -17,8 +16,23 @@
     top: 0;
     left: 0;
     overflow: hidden;
-   } 
+}
+.containerdiv {
+    border: 0;
+    position: relative;
+}
+.containerdiv--detail {
+    width: 200px;
+    margin-bottom: 20px;
+}
+.containerdiv--list {
 
-img {
+    width: 100px;
+    margin-bottom: 8px;
+}
+img.img--detail {
     max-width: 200px;
+}
+img.img--list {
+    max-width: 100px;
 }

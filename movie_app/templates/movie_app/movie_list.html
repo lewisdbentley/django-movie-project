@@ -4,26 +4,70 @@
 {% block content %}
 <h1>Movie List</h1>
 {% if movie_list %}
-    <ul>
-        {% for movie in movie_list %}
-        <li>
-            <a href="{{ movie.get_absolute_url }}">{{ movie }}</a>
-            {% if movie.directed_by %}
-            ({{ movie.directed_by }})
-            {% endif %}
-            {% if movie.owner %}
-                {% if movie.owner == request.user.profile %}
-                    <strong style="color:blue">You created this movie.</strong>
-                {% else %}
-                    <strong>Created by: </strong>({{ movie.owner.user.get_username }})
-                {% endif %}                
-            {% endif %}
-            {% if movie.vote %}
-                <strong>Rating: {{ movie.vote.final_rating }}</strong>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
+    <table class="table table-bordered">
+        <thead>
+            <th>Title</th>
+            <th>Director</th>
+            <th>Genre</th>
+            <th>Date Released</th>
+            <th>Rating</th>
+        </thead>
+        <tbody>
+            {% for movie in movie_list %}
+            <tr>
+                <td>
+                    {% if movie.title %}
+                        <a href="{{ movie.get_absolute_url }}">{{ movie }}</a>
+                    {% else %}
+                        <em class="text-muted">No title.</em>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if movie.directed_by %}
+                        <a href="{{ movie.directed_by.get_absolute_url }}">{{ movie.directed_by }}</a></td>
+                    {% else %}
+                        <em class="text-muted">No director</em>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if movie.display_genre != '' %}
+                        {{ movie.display_genre }}
+                    {% else %}
+                        <em class="text-muted">No genre</em>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if movie.date_released %}
+                        {{ movie.date_released }}
+                    {% else %}
+                        <em class="text-muted">No date</em>
+                    {% endif %}
+                </td>
+                <td>
+                    
+                    {% if movie.vote %}
+                        {% if movie.vote.final_rating == None %}
+                            <em class="text-muted">No rating</em>
+                        {% elif movie.vote.final_rating > 1 %}
+                            {% widthratio movie.vote.final_rating 5 100 as width %}
+                            <div class="containerdiv containerdiv--list">
+                                {% load static %}
+                                <div class="cornerimage" style="width:{{ width }}px;">
+                                    <img class="img--list" src="{% static 'img/stars_full_grey.png' %}" alt="">
+                                </div>
+                            </div>
+                        {% else %}
+                            <img class="img--list" src="{% static 'img/one_star_grey.png' %}" alt="">
+                        {% endif %}
+                    {% else %}
+                        <em class="text-muted">No rating</em>
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% else%}
     <p>There are no movies in the collection.</p>
 {% endif %}

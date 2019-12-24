@@ -107,15 +107,15 @@ class Movie(models.Model):
     title = models.CharField(max_length=100, blank=True)
     language = models.ForeignKey(Language, related_name="movies", on_delete=models.SET_NULL, null=True, blank=True)
     rated_by = models.ManyToManyField(Profile, related_name="has_rated", blank=True)
-    genres = models.ManyToManyField(Genre, related_name="movies", blank=True)
-    cast = models.ManyToManyField(Actor, related_name="movies", blank=True)
+    genre = models.ManyToManyField(Genre, related_name="movies", blank=True, help_text='Hold down "Control", or "Command" on a Mac, to select more than one.')
+    cast = models.ManyToManyField(Actor, related_name="movies", blank=True, help_text='Hold down "Control", or "Command" on a Mac, to select more than one.')
     runtime = models.IntegerField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     date_released = models.DateField(null=True, blank=True, help_text="MM/DD/YYYY")
 
     def display_genre(self):
-        """Create a string for the Genres. This is required to display genre in Admin."""
-        return ', '.join(genre.name for genre in self.genres.all()[:3])
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ', '.join(genre.name for genre in self.genre.all()[:1])
     display_genre.short_description = "Genre"
 
     def display_cast(self):
@@ -139,7 +139,7 @@ class Vote(models.Model):
     movie = models.OneToOneField(Movie, on_delete=models.CASCADE)
     times_rated = models.IntegerField(default=0)
     total_rating = models.IntegerField(default=0)
-    final_rating = models.IntegerField(default=0)
+    final_rating = models.IntegerField(null=True)
 
     def calc_rating(self, to_add):
         # Add vote to total_rating

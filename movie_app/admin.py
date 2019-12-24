@@ -6,11 +6,11 @@ from django.utils.html import format_html
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
-    filter_horizontal = ('genres', 'cast',)
+    filter_horizontal = ('genre', 'cast',)
     list_display = ('title', 'directed_by', 'display_genre', 'display_cast_pink', 'date_released',)
     list_display_links = ('title',)
     list_editable = ('directed_by', 'date_released')
-    list_filter = ('genres',)
+    list_filter = ('genre',)
     list_per_page = 10
 
 
@@ -28,7 +28,7 @@ class MovieAdmin(admin.ModelAdmin):
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-    fields = ('first_name', 'last_name', ('date_of_birth', 'date_of_death'), 'comments')
+    fields = ('first_name', 'last_name', ('date_of_birth', 'date_of_death'),)
 
 admin.site.register(Director)
 admin.site.register(Genre)

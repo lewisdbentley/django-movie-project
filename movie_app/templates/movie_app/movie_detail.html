@@ -11,13 +11,13 @@
     {% endif %}
     {% if movie.vote.final_rating %}
         {% widthratio movie.vote.final_rating 5 200 as width %}
-        <div class="containerdiv">
+        <div class="containerdiv containerdiv--detail">
             <div>
                 {% load static %}
-                <img src="{% static 'img/stars_blank.png' %}" alt="">
+                <img class="img--detail" src="{% static 'img/stars_blank.png' %}" alt="">
             </div>
             <div class="cornerimage" style="width:{{ width }}px;">
-                <img src="{% static 'img/stars_full.png' %}" alt="">
+                <img class="img--detail" src="{% static 'img/stars_full.png' %}" alt="">
             </div>
         </div>
     {% endif %}

@@ -18,24 +18,3 @@ class MovieVoteForm(forms.Form):
             raise ValidationError(_('Invalid number - greater than five.'))
 
         return data
-
-class MovieCreateForm(forms.Form):
-    title = forms.CharField(max_length=30)
-    owner = forms.CharField(max_length=30)
-    description = forms.CharField(
-        max_length=2000,
-        widget=forms.Textarea(),
-        help_text='Write a description of the movie!'
-        )
-    source = forms.CharField(
-        max_length=50,
-        widget=forms.HiddenInput()
-    )
-
-    def clean(self):
-        cleaned_data = super(MovieCreateForm, self).clean()
-        title = cleaned_data.get('title')
-        owner = cleaned_data.get('owner')
-        description = cleaned_data.get('description')
-        if not title and not owner and not description:
-            raise forms.ValidationError('You have to write something!')

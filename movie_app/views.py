@@ -4,7 +4,7 @@ from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpRespons
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from .models import Movie, Director, MovieComment
-from .forms import MovieVoteForm, MovieCreateForm
+from .forms import MovieVoteForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
@@ -51,23 +51,13 @@ class MovieCreate(LoginRequiredMixin, generic.edit.CreateView):
     A view to create a new movie.
     """
     model = Movie
-    fields = {'directed_by', 'title', 'language', 'genres', 'cast', 'runtime', 'description', 'date_released'}
+    fields = {'directed_by', 'title', 'language', 'genre', 'cast', 'runtime', 'description', 'date_released'}
     initial = {'runtime': '259'}
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.owner = self.request.user.profile
         return super(MovieCreate, self).form_valid(form)
-
-
-def MovieCreateNew(request):
-    if request.method == "POST":
-        form = MovieCreateForm(request.POST)
-        if form.is_valid():
-            pass
-    else:
-        form = MovieCreateForm()
-    return render(request, "movie_app/MovieCreateNew.html", {'form': form})
 
 
 class MovieUpdate(LoginRequiredMixin, UserPassesTestMixin, generic.edit.UpdateView):

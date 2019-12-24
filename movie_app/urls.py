@@ -18,5 +18,4 @@ urlpatterns = [
     path('moviecomment/<int:pk>/update', views.MovieCommentUpdate.as_view(), name="html-moviecomment-update"),
     path('moviecomment/<int:pk>/delete', views.MovieCommentDelete.as_view(), name="html-moviecomment-delete"),
     path('movies/<int:pk>/vote', views.MovieVote, name="movie-vote"),
-    path('movies/createnew', views.MovieCreateNew, name="html-movie-create-new"),
 ]
